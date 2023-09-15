@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integracao Spark - Sophia Carrazza</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+ 
+</head>
+<body class="body-background">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <nav class="shadow p-3 mb-5 bg-body-tertiary rounded"class="navbar bg-body-tertiary" >
+        <div class="container-fluid" >
+          <a class="navbar-brand"  href="#">
+            <div class="navbar" style="display: inline-flex;">
+            <img src="images/muuvie.png" alt="Logo" height="60" class="d-inline-block align-text-top">
+            <h1 style="font-style: italic; color: rgb(28, 80, 129); font-weight: 600;">Muuvie</h1>
+        </div>
+          </a>
+        </div>
+      </nav>
+ <div class="content" style="padding-top: 12rem; ">
+    <div class="container text-center" >
+        <div class="row">
+          <div class="col">
+            <div class="shadow p-3 mb-5 bg-body-tertiary rounded"class="card" style="width: 25rem;">
+                <div class="card-body">
+                  <h4 class="card-title" style="font-weight: 600;">Insira um filme</h4>
+                   <form>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Código</label>
+                        <input  class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Gênero</label>
+                        <input  class="form-control" id="exampleInputPassword1">
+                      </div>
+                    <div class="mb-3">
+                      <label for="exampleInputPassword1" class="form-label">Nome</label>
+                      <input  class="form-control" id="exampleInputPassword1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Duração</label>
+                        <input class="form-control" id="exampleInputPassword1">
+                      </div>
+                    
+                    <button type="submit" class="btn btn-success">Inserir</button>
+                  </form>
+                </div>
+              </div>
+          </div>
+          <div class="col">
+            <div class="shadow p-3 mb-5 bg-body-tertiary rounded"class="card" style="width: 25rem;">
+                <div class="card-body">
+                  <h5 class="card-title" style="font-weight: 600;">Detalhe um filme</h5>
+                   <form>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Código do filme</label>
+                        <input class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <button type="submit" class="btn btn-success">Salvar</button>
+
+                      <h5 class="card-title" style="padding-top: 30px; font-weight: 600;">Remova um filme</h5>
+                      <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Código do filme</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                      </div>
+                      <button type="submit" class="btn btn-success">Remover</button>
+                      
+                  </form>
+                </div>
+              </div>
+          </div>
+          <div class="shadow p-3 mb-5 bg-body-tertiary rounded"class="card" style="width: 25rem;">
+            <div class="card-body">
+                <h4 class="card-title" style="font-weight: 600;">Liste os filmes</h4>
+                <div class="text-center">
+                    <img src="images/godfather.jpg" class="rounded" alt="..." style="max-width: 280px;  padding-bottom: 15px;">
+                  </div>
+                    <button type="submit" class="btn btn-success">Listar</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            
+    <div class="tabela">
+        <table  class="table">
+            <thead>
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">1</th>
+                <th scope="col">2</th>
+                <th scope="col">3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Gênero</th>
+                <td>ação</td>
+                <td>comédia</td>
+                <td>drama</td>
+              </tr>
+              <tr>
+                <th scope="row">Nome</th>
+                <td>Inception</td>
+                <td>Barbie</td>
+                <td>Oppenheimer</td>
+              </tr>
+              <tr>
+                <th scope="row">Duração</th>
+                <td >60mins</td>
+                <td>150mins</td>
+                <td>150mins</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+        </div>
+      </div>
+    
+    
+
+</div>
+
+<script>
+function listarFilmes() {
+    // Fazer uma solicitação AJAX para obter os dados dos filmes
+    fetch("/filmes")
+        .then(response => response.json())
+        .then(data => {
+            const listaFilmes = document.getElementById("listaFilmes");
+
+            listaFilmes.innerHTML = ""; // Limpa a lista
+
+            if (data.length === 0) {
+                listaFilmes.innerHTML = "<li>Nenhum filme cadastrado.</li>";
+            } else {
+                data.forEach(function (filme) {
+                    const itemLista = document.createElement("li");
+                    itemLista.innerHTML = `
+                        <strong>ID:</strong> ${filme.id}<br>
+                        <strong>Código:</strong> ${filme.codigo}<br>
+                        <strong>Gênero:</strong> ${filme.genero}<br>
+                        <strong>Nome:</strong> ${filme.nome}<br>
+                        <strong>Duração:</strong> ${filme.duracao}<br><br>
+                    `;
+                    listaFilmes.appendChild(itemLista);
+                });
+            }
+        })
+        .catch(error => console.error("Erro ao obter dados dos filmes: " + error));
+}
+</script>
+<script>
+document.getElementById("cadastroForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const codigo = document.querySelector('input[name="codigo"]').value;
+    const genero = document.querySelector('input[name="genero"]').value;
+    const nome = document.querySelector('input[name="nome"]').value;
+    const duracao = document.querySelector('input[name="duracao"]').value;
+
+    if (typeof(Storage) !== "undefined") {
+        const id = new Date().getTime().toString();
+        const filmeData = {
+            id: id,
+            codigo: codigo,
+            genero: genero,
+            nome: nome,
+            duracao: duracao
+        };
+
+        const filmes = JSON.parse(localStorage.getItem("filmes")) || [];
+        filmes.push(filmeData);
+
+        localStorage.setItem("filmes", JSON.stringify(filmes));
+
+        // Limpa o formulário
+        document.getElementById("cadastroForm").reset();
+
+        alert("Filme cadastrado com sucesso!");
+
+        // Atualiza a lista de filmes
+        listarFilmes();
+    } else {
+        alert("Local Storage não suportado no seu navegador.");
+    }
+});
+
+function listarFilmes() {
+    const filmes = JSON.parse(localStorage.getItem("filmes")) || [];
+    const listaFilmes = document.getElementById("listaFilmes");
+
+    listaFilmes.innerHTML = ""; // Limpa a lista
+
+    if (filmes.length === 0) {
+        listaFilmes.innerHTML = "<li>Nenhum filme cadastrado.</li>";
+    } else {
+        filmes.forEach(function (filme) {
+            const itemLista = document.createElement("li");
+            itemLista.innerHTML = `
+                <strong>ID:</strong> ${filme.id}<br>
+                <strong>Código:</strong> ${filme.codigo}<br>
+                <strong>Gênero:</strong> ${filme.genero}<br>
+                <strong>Nome:</strong> ${filme.nome}<br>
+                <strong>Duração:</strong> ${filme.duracao}<br><br>
+            `;
+            listaFilmes.appendChild(itemLista);
+        });
+    }
+}
+
+document.getElementById("listarBtn").addEventListener("click", function () {
+    listarFilmes();
+});
+
+document.getElementById("removerBtn").addEventListener("click", function () {
+    const id = document.getElementById("removerId").value;
+    const filmes = JSON.parse(localStorage.getItem("filmes")) || [];
+
+    // Encontre o índice do filme com base no ID
+    const index = filmes.findIndex((filme) => filme.id === id);
+
+    if (index !== -1) {
+        filmes.splice(index, 1); // Remove o filme do array
+        localStorage.setItem("filmes", JSON.stringify(filmes)); // Atualiza o Local Storage
+        listarFilmes(); // Atualiza a lista de filmes na página
+        alert("Filme removido com sucesso!");
+    } else {
+        alert("Filme não encontrado.");
+    }
+});
+
+</script>
+</body>
+</html>
